@@ -1,4 +1,4 @@
-const Users = require("../model/users");
+
 const User = require("../model/users");
 const { param } = require("../routes/users");
 const nodemailer = require('nodemailer');
@@ -11,20 +11,21 @@ function response(data,status=200,message="ok"){
 }
 
 const transporter = nodemailer.createTransport({
-    service: 'gamail',
+    service: 'gmail',
     auth:{
-        user:"vanka@xponential.digital",
-        password:"Chetan"
+        user:"chandu@xponential.digital",
+        pass:"mgllagoipjegyuqo"
     }
 })
 function sendmail(toMail,otp){
+    
     const mailOptions = {
         from :"chandu@xponential.digital",
         to: toMail,
-        subject:"Account created",
-        text:`otp is here: ${otp}`
+        subject:" Successfully Account created",
+        text:`here your otp: ${otp}`
     };
-    transporter.sendmail(mailOptions,function(error,info){
+    transporter.sendMail(mailOptions,function(error,info){
         if (error){
             console.log(error);
 
@@ -35,11 +36,12 @@ function sendmail(toMail,otp){
 }
 
 const createUser = async(req,res)=>{
-    const password = await bcrypt.hash(req.res.password,10)
+    const password = await bcrypt.hash(req.body.password,10)
     try{
         const otp1=otp.generate({length:10})
         const user = await User.query().insert(req.body);
         sendmail(req.body.email,otp1)
+
         res.send(user)
 
     }
@@ -51,8 +53,8 @@ const createUser = async(req,res)=>{
 
     const updateUser = async (req,res)=>{
         try{
-            let paramsId = req.paramsId
-            const updateDetails = (await Users.query()).findById(paramsId).patch(re)
+            let paramsId = req.params.Id
+            const updateDetails = await User.query().findById(paramsId).patch(req.body)
             res.status(200).json(response(req.body,"profile Upadte",200))
         }
         catch(err){
