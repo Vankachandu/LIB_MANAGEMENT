@@ -3,7 +3,7 @@ const express= require ("express");
 const app = express();
 const service = require("./service/login_token")
 const user = require('./routes/users');
-const Users = require("./model/users");
+// const Users = require("./model/users");
 app.use(express.json());
 
 app.post("/login",service.TokenGenrate)
