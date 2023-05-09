@@ -2,7 +2,12 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 const db = require('../model/users');
-const { response } = require('express');
+const Users = require('../model/users');
+
+
+function response(data,status=200,message="ok"){
+    return {status , message ,data}
+}
 
 const authUser = (req, res, next) => {
     try {
@@ -14,9 +19,11 @@ const authUser = (req, res, next) => {
             }
             else {
                 try {
-                    const jwt_role = await UserTable.findOne({email:user.email})
+                    const jwt_role = await Users.query().findOne({email:user.email})
+
+                  
                    
-                        if (jwt_role.role == "User" && result == true) {
+                        if (jwt_role.role == "Admin" ) {
                             next();
                         }
                     

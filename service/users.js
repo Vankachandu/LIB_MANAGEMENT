@@ -61,5 +61,6 @@ const createUser = async(req,res)=>{
             res.status(400).json(response(""+err,"error",400))
         }
     }
+    
 
 module.exports={createUser,updateUser}

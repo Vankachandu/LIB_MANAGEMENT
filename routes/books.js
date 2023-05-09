@@ -2,10 +2,11 @@ const express = require('express');
 const json = require('../authenetation/auth_token.js')
 
 const routes = express.Router();
-const User =require("../service/users")
+const Books =require("../service/books");
 
-routes.post("/",json.authUser, User.createUser);
-routes.put('/update/:Id',User.updateUser)
+
+routes.post("/book",json.authUser, Books.createbooks);
+routes.put('/book/update/:Id',Books.updatebooks)
 
 
 
