@@ -1,21 +1,29 @@
-const Books = require("../model/users");
+
+const Books = require('../model/books');
+
+
+
+
+function response(data,status=200,message="ok"){
+    return {status , message ,data}
+}
 
 const createbooks = async(req,res)=>{
     
     try{
         
-        const books = await Books.query().insert(req.body);
+        const books1 = await Books.query().insert(req.body);
        
 
-        res.send(books)
+        res.send(books1)
 
     }
     catch(err){
-        res.json(response(null,500,err))
+        res.json(response(null,500,"err"+err))
 
     }
 }
-
+    
     const updatebooks = async (req,res)=>{
         try{
             let paramsId = req.params.Id
@@ -27,5 +35,36 @@ const createbooks = async(req,res)=>{
         }
 }
 
- module.exports={createbooks,updatebooks};
+ const getallbooks = async (req , res)=>{
+    try{
+        const getbooks = await Books.query()
+        res.send(getbooks)
+    }
+    catch(err){
+        res.send(err)
+
+    }
+ }
+
+ const getonebooks = async (req , res)=>{
+    try{
+        const getbooks = await Books.query().where("Name",req.body.Name)
+        
+        if(getbooks.length>=1){
+            return  res.send(getbooks) 
+
+        }
+        res.send("Curently The Book Is Not Avaliable")
+
+    }
+    catch(err){
+        res.send(err)
+
+    }
+ }
+
+ 
+
+
+ module.exports={createbooks,updatebooks,getallbooks,getonebooks};
     

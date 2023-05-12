@@ -23,4 +23,4 @@ class books extends Model {
     }
 }
 
-module.exports ={books};
+module.exports =books;

@@ -7,7 +7,8 @@ const Books =require("../service/books");
 
 routes.post("/book",json.authUser, Books.createbooks);
 routes.put('/book/update/:Id',Books.updatebooks)
-
+routes.get('/getbooks',Books.getallbooks)
+routes.get('/getone',Books.getonebooks)
 
 
 module.exports={routes};
