@@ -15,6 +15,7 @@ class Users extends Model {
                 name:{type: 'string'},
                 email: {type: 'string'},
                 address:{type:'string'},
+                profile:{type:'string'},
                 password:{type: 'string'},
                 role:{type:'string'},
                 phonenumber:{type:"number"}

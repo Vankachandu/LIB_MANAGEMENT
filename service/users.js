@@ -4,7 +4,8 @@ const { param } = require("../routes/users");
 const nodemailer = require('nodemailer');
 const otp = require('generate-password');
 const bcrypt = require('bcrypt');
-
+const multer = require('multer');
+const path = require('path');
 
 function response(data,status=200,message="ok"){
     return {status , message ,data}
@@ -61,6 +62,50 @@ const createUser = async(req,res)=>{
             res.status(400).json(response(""+err,"error",400))
         }
     }
+    let profileext
+    let profilename
+
+    const filestorageEngine=multer.diskStorage({
+       
+        destination:"profile",
+        
+        filename: (req, file, cb)=>{
+            cb(null,"chandu"+ Date.now()+"--"+path.extname(file.originalname));
+            profileext = path.extname(file.originalname)
+        },
+    
+    });
+    
+    const upload=multer({storage:filestorageEngine}).single("image2")
+    
+      
+    const profileupload = async (req,res)=>{
+        try{
+            const pro = await User.query().findOne({id:req.params.id})
+            console.log(pro)
+            profilename=pro.Name
+            
+            // name = 
+            upload(req, res, function (err) {
+                if (err) {
+                    res.send(err);
+                }})
+           
+            let basic = {
+                
+                profile: profilename,
+             }
+             console.log(filestorageEngine.getFilename)
+             
+          
+         
+            const updateDetails = await User.query().findOne({id:req.params.id}).update(basic)
+            res.status(200).json(response(basic,"profile Upadte",200))
+        }
+        catch(err){
+            res.status(400).json(response(""+err,"error",400))
+        }
+    }
     
 
-module.exports={createUser,updateUser}
+module.exports={createUser,updateUser,profileupload}
